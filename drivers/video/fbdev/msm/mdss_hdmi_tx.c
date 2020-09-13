@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2020, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2010-2017,2019-2020, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -3517,6 +3517,8 @@ static void hdmi_tx_hpd_off(struct hdmi_tx_ctrl *hdmi_ctrl)
 	hdmi_ctrl->hpd_off_pending = false;
 	hdmi_ctrl->dc_support = false;
 
+	hdmi_edid_reset_parser(hdmi_tx_get_fd(HDMI_TX_FEAT_EDID));
+
 	DEV_DBG("%s: HPD is now OFF\n", __func__);
 } /* hdmi_tx_hpd_off */
 
@@ -4101,6 +4103,7 @@ static int hdmi_tx_evt_handle_check_param(struct hdmi_tx_ctrl *hdmi_ctrl)
 		DEV_DBG("%s: res change %d ==> %d\n", __func__,
 			hdmi_ctrl->vic, new_vic);
 		goto done;
+<<<<<<< HEAD
 	}
 
 	/*
@@ -4112,6 +4115,19 @@ static int hdmi_tx_evt_handle_check_param(struct hdmi_tx_ctrl *hdmi_ctrl)
 		rc = 1;
 		DEV_DBG("%s: Bitdepth changed\n", __func__);
 	}
+=======
+	}
+
+	/*
+	 * Since bootloader doesn't support DC return 1
+	 * for panel reconfig.
+	 */
+	if (hdmi_ctrl->panel_data.panel_info.cont_splash_enabled
+			&& hdmi_tx_dc_support(hdmi_ctrl)) {
+		rc = 1;
+		DEV_DBG("%s: Bitdepth changed\n", __func__);
+	}
+>>>>>>> 19d85c469573478274416f8fa50623a46642438b
 done:
 	pinfo->is_ce_mode = hdmi_util_is_ce_mode(new_vic);
 end:
