@@ -1,4 +1,4 @@
-/* Copyright (c) 2013-2017, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2013-2019, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -793,7 +793,6 @@ struct vfe_device {
 	enum cam_ahb_clk_vote ahb_vote;
 	enum cam_ahb_clk_vote user_requested_ahb_vote;
 	struct cx_ipeak_client *vfe_cx_ipeak;
-	int cx_ipeak_bit;
 
 	/* Sync variables*/
 	struct completion reset_complete;

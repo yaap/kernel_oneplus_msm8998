@@ -18,6 +18,7 @@
 #include "msm_cci.h"
 #include "msm_camera_dt_util.h"
 
+/* chenneng@camera 20151117 add for product information */
 #include <linux/project_info.h>
 struct camera_vendor_match_tbl {
     char sensor_name[32];
@@ -765,6 +766,7 @@ int32_t msm_sensor_driver_probe(void *setting,
 	struct msm_camera_cci_client        *cci_client = NULL;
 	struct msm_camera_sensor_slave_info *slave_info = NULL;
 	struct msm_camera_slave_info        *camera_info = NULL;
+/* chenneng@camera 20151117 add for product information */
 	uint32_t count = 0,i;
 	enum COMPONENT_TYPE CameraID;
 
@@ -1109,24 +1111,25 @@ CSID_TG:
 	/*Save sensor info*/
 	s_ctrl->sensordata->cam_slave_info = slave_info;
 
-if (0 == slave_info->camera_id)
-    CameraID = R_CAMERA;
-else if (1 == slave_info->camera_id)
-    CameraID = SECOND_R_CAMERA;
-else if (2 == slave_info->camera_id)
-    CameraID = F_CAMERA;
+/* chenneng@camera 20151117 add for product information */
+    if (0 == slave_info->camera_id)
+        CameraID = R_CAMERA;
+    else if (1 == slave_info->camera_id)
+        CameraID = SECOND_R_CAMERA;
+    else if (2 == slave_info->camera_id)
+        CameraID = F_CAMERA;
 
-count = ARRAY_SIZE(match_tbl);
-for (i = 0;i < count;i++) {
-    if (!strcmp(slave_info->sensor_name,match_tbl[i].sensor_name))
-        break;
-}
-if (i >= count)
-    pr_err("%s,Match camera sensor faild!,current sensor name is %s",
-        __func__,slave_info->sensor_name);
-else
-    push_component_info(CameraID,slave_info->sensor_name,
-        match_tbl[i].vendor_name);
+    count = ARRAY_SIZE(match_tbl);
+    for (i = 0;i < count;i++) {
+        if (!strcmp(slave_info->sensor_name,match_tbl[i].sensor_name))
+            break;
+    }
+    if (i >= count)
+        pr_err("%s,Match camera sensor faild!,current sensor name is %s",
+            __func__,slave_info->sensor_name);
+    else
+        push_component_info(CameraID,slave_info->sensor_name,
+            match_tbl[i].vendor_name);
 
 	msm_sensor_fill_sensor_info(s_ctrl, probed_info, entity_name);
 

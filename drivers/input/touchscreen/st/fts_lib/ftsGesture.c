@@ -381,7 +381,8 @@ int removeCustomGesture(u8 gestureID)
 		return res;
 	}
 
-	if (readData[2] != gestureID || readData[4] != 0x00) { /* check of gestureID is redundant */
+	/* check of gestureID is redundant */
+	if ((readData[2] != gestureID) || (readData[4] != 0x00)) {
 		logError(1, "%s removeCustomGesture: remove event status not OK! ERROR %08X\n", tag, readData[4]);
 		return ERROR_GESTURE_REMOVE;
 	}
